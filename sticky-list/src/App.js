@@ -5,6 +5,8 @@ import ListFooter from "./components/ListFooter";
 import UserList from "./components/UserList";
  import AddUserForm from './components/AddUserForm';
 import MultiStepForm from "./components/MultiStepForm";
+// import { Router, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -12,6 +14,46 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = React.useState(true);
   const [showStep, setShowStep] = React.useState(true);
+  //home page
+  const Home = () =><>
+  <div>
+      <ListHeader />
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
+      <div>
+      <h1>User Management System</h1>
+      <button onClick={() => setShowForm(!showForm)}>
+        {showForm ? 'Hide Form' : 'Show Form'}
+      </button>
+      {showForm && <AddUserForm />}
+      <UserList />
+      {/* <button onClick={() => setShowStep(!showStep)}>
+        {showStep? 'Hide Form' : 'Show Form'}
+      </button>
+      {showStep && <MultiStepForm />} */}
+    </div>
+      <ListFooter loading={loading} />
+    </div>
+  </>;
+  //multi step page
+  const MultiStep = () =><>
+        <ListHeader />
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
+     
+      <button onClick={() => setShowStep(!showStep)}>
+        {showStep? 'Hide Form' : 'Show Form'}
+      </button>
+      {showStep && <MultiStepForm />}
+
+      <ListFooter loading={loading} />
+  </>;
   useEffect(() => {
     const fetchItems = async () => {
       setLoading(true);
@@ -44,27 +86,13 @@ const App = () => {
   }, [loading]);
 
   return (
-    <div>
-      <ListHeader />
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-      <div>
-      <h1>User Management System</h1>
-      <button onClick={() => setShowForm(!showForm)}>
-        {showForm ? 'Hide Form' : 'Show Form'}
-      </button>
-      {showForm && <AddUserForm />}
-      <UserList />
-      <button onClick={() => setShowStep(!showStep)}>
-        {showStep? 'Hide Form' : 'Show Form'}
-      </button>
-      {showStep && <MultiStepForm />}
-    </div>
-      <ListFooter loading={loading} />
-    </div>
+    <Router>
+      <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/multi-step" element={<MultiStep />} />
+    </Routes>
+    </Router>
+
   );
 };
 

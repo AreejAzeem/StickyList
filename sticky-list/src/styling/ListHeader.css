@@ -6,4 +6,9 @@
     border-bottom: 1px solid #ccc;
     z-index: 1000;
   }
+  .list_header_link{
+    color: blue;
+    text-decoration: none;
+
+  }
   

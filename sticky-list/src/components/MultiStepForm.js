@@ -7,7 +7,6 @@ const MultiStepForm = () => {
 
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
-  console.log("step---->",step)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,7 +27,10 @@ const MultiStepForm = () => {
         newErrors.email = 'Email is invalid';
       }
     }
-  
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return newErrors;
+  }
     return newErrors;
   };
   
@@ -45,6 +47,11 @@ const MultiStepForm = () => {
   };
 
   const handleSubmit = () => {
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
     dispatch(addUser({ id: Date.now(), ...formData }));
     alert('User added successfully!');
   };
